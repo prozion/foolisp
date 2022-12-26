@@ -181,10 +181,6 @@
           1
           (mul i (fact (dec i)))))
 
-    ; (gt 5 1))
-    ;
-    ;   initial-context)
-
     (cond
       ((gt 10 20)
         (fact 1000000))
