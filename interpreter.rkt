@@ -108,6 +108,8 @@
     ((symbol-in-the-context? expr context)
       ; (--- 111 context)
       (get-from-context expr context))
+    ((equal? (car expr) 'quote)
+      expr)
     ((equal? (car expr) 'def)
       ; (--- 222)
       (add-to-context context (cadr expr) (eval (cddr expr) context)))

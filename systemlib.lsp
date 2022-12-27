@@ -18,7 +18,9 @@
     false
     (if (eq b 0)
       true
-      false)))
+      (if (eq a 0)
+        false
+        (gt (dec a) (dec b))))))
 
 (defun lt (a b)
   (if (eq a b)
@@ -41,7 +43,7 @@
       0
       (if (eq a 1)
         b
-        (add a (mul (dec a) b))))))
+        (add b (mul (dec a) b))))))
 
 (defun len (lst)
   (if (eq (cdr lst) nil)
