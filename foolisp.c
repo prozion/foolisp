@@ -7,16 +7,33 @@
 //   }
 // }
 
-enum cons_cell_type {CONS, CHAR};
+typedef enum {CONS, CHAR} cons_cell_type;
 
 char NIL = 0;
 
 struct Cons {
-  enum cons_cell_type cartype;
+  cons_cell_type cartype;
   void* car;
-  enum cons_cell_type cdrtype;
+  cons_cell_type cdrtype;
   void* cdr;
 };
+
+typedef struct Cons* Cptr;
+
+#define cons(T1, T2) _Generic((T1), \
+  int: _Generic((T2), \
+  int: cons_char_char, \
+  char: cons_char_char, \
+  Cptr: cons_char_cons), \
+  char: _Generic((T2), \
+  int: cons_char_char, \
+  char: cons_char_char, \
+  Cptr: cons_char_cons), \
+  Cptr: _Generic((T2), \
+  int: cons_cons_char, \
+  char: cons_cons_char, \
+  Cptr: cons_cons_cons) \
+)(T1, T2)
 
 struct Cons* cons_char_char(char a, char b) {
   struct Cons *cp = malloc(sizeof(struct Cons));
@@ -76,10 +93,12 @@ void print_cons(struct Cons* acons, int is_beginning) {
   else {
     printf(". %c )", *(char*)acons->cdr);
   }
-}
+}  
 
 int main() {
-  print_cons(cons_char_cons('a', cons_cons_cons(cons_char_char('d', 'e'), cons_char_cons('c', cons_char_char('f', NIL)))), 1);
+  // print_cons(cons('a', cons(cons('d', 'e'), cons('c', cons('f', NIL)))), 1);
+  print_cons(deep_reverse(cons('a', cons(cons('d', 'e'), cons('c', cons('f', NIL))))), 1);
+  printf("\n");
   /*print_cons(cons_char_char('a', NIL));*/
   return 0;
 }
